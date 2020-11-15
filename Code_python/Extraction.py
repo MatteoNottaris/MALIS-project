@@ -4,11 +4,6 @@
 
 
 
-#My APIKEY for Alphavantage
-my_APIKEY = '9AZS79EDFOZ47YKP'
-
-
-
 #Importation of packages
 from alpha_vantage.foreignexchange import ForeignExchange
 from alpha_vantage.techindicators import TechIndicators
