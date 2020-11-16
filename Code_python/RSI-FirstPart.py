@@ -14,6 +14,8 @@
 import os 
 os.chdir('C:/Users/matno/Desktop/Télecom/2A/MALIS/Project/GIT/MALIS-project/Code_python')
 import Extraction
+import numpy as np
+import pandas as pd
 
 
 #My APIKEY for Alphavantage
@@ -28,6 +30,9 @@ currency1 = 'EUR'
 currency2 = 'USD'
 my_Path = 'C:/Users/matno/Desktop/Télecom/2A/MALIS/Project/GIT/MALIS-project/Code_python/Data/'
 
+parameter1 = 70
+parameter2 = 30
+InitAmount =  1000000
 
 
 
@@ -49,41 +54,31 @@ def updateFiles ():
 #                    II) Secondly we need to develop the algorithms to generate the set
 
 
-#Importation of packages
-import numpy as np
-import pandas as pd
-
-
-
-#Useful variables
-parameter1 = 70
-parameter2 = 30
-
-InitAmount =  1000000
-
-
 
 
 #This function is the main function generating the set of data for training the neural network
 def main ():
     
     #first extract data and update the corresponding files
-    updateFiles()
+    #updateFiles()
     
-    #getting all data files name in a list
-    DataType = getDataType(my_Path)
-    #create a panda dictionnary with all data
-    data = []
-    for i in range(len(DataType)):
-        DataArray = dataExcel(DataType[0][i])
-        data.append(DataArray)
-    DataDic = pd.Series(data)
-    DataDic.index = DataType[1]
+
+    #creating a panda dictionnary with all data
+    DataDico = formatData()
     
-    
-    
-    
-    
+    #updating the DataDico concidering all data set size
+    new_DataDico = updateData(DataDico)
+
+    return()
+
+
+
+###########################################################################################################################
+
+
+
+
+#                                III) We need to develop tools functions in order to create main
 
 
 
@@ -115,22 +110,72 @@ def RSIsignal(RSIval):
     
  
     
-#This function is extracting the data from the excel files and return a list with the content of the excel sheets
+#This function formatData() is extracting the data from the excel files and return a dictionnary with the content of the excel sheets
+#dataExcel() allows to read an excel File
+#getFiles () allows to get all excel files in a file
+def formatData():
+    data = []
+    FilesNames = getFiles(my_Path)
+    for i in range(len(FilesNames)):
+        DataArray = dataExcel(FilesNames[i] + '.xlsx')
+        date = DataArray.loc[:,'date']
+        value = DataArray.iloc[:,[1]].values.tolist()
+        TemporaryDic = pd.Series(value)
+        TemporaryDic.index = date
+        data.append(TemporaryDic)
+    DataDic = pd.Series(data)
+    DataDic.index = FilesNames
+    return(DataDic)
+    
 def dataExcel (FileName):
     data = pd.read_excel (my_Path + FileName)
     return(data)
 
 
-
-
-#This function is returning a list of all data type in my_Path
-def getDataType(path):
+def getFiles(path):
     FilesNames = []
-    FilesNickNames = []
     # r=root, d=directories, f = files
     for r, d, f in os.walk(path):
         for file in f:
             if '.xlsx' in file:
-                FilesNames.append(file)
-                FilesNickNames.append(file.replace('_updated.xlsx','',1))
-    return(FilesNames, FilesNickNames)
+                FilesNames.append(file.replace('.xlsx','',1))
+    return(FilesNames)
+
+
+
+#####                  NOT WORKING
+
+
+#This function is extracting from all the data set the intersection set usable
+# set1 and set2 are supposed to be pd.Series
+def updateData(Dico):
+    
+    #first we need to find the min and the max Date to all the data set
+    commonDate = []
+    for item1 in Dico.iteritems:
+        for item2 in Dico.iteritems:
+            result = intersectionSet(item1[1], item2[1])
+            if result[0] > commonDate[0]:
+                commonDate[0] = result[0]
+            if result[1] < commonDate[1]:
+                commonDate [1] = result[1]
+    
+    #secondly we have to update every data set accordingly
+    for item1 in Dico.iteritems:
+        for item2 in item1[0].iteritems:
+            if item2[0] < commonDate[0] or item2[0] > commonDate[1]:
+                item1[0].drop(item2[0])
+                
+    return(Dico)   
+        
+def intersectionSet (set1, set2):
+    min1 = min(set1.index)
+    min2 = min(set2.index)
+    EarliestDate = max([min1,min2])
+    max1 = max(set1.index)
+    max2 = max(set2.index)
+    LatestDate = min([max1,max2])
+    
+    return(EarliestDate, LatestDate)
+
+print(main())
