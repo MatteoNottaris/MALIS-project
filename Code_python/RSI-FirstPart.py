@@ -151,7 +151,7 @@ def getFiles(path):
 def updateData(Dico):
     
     #first we need to find the min and the max Date to all the data set
-    commonDate = []
+    commonDate = ['2020-01-01', date du jour]
     for item1 in Dico.iteritems:
         for item2 in Dico.iteritems:
             result = intersectionSet(item1[1], item2[1])
