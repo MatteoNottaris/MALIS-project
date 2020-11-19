@@ -36,7 +36,7 @@ parameter2 = 30
 InitAmount = 1000000
 
 
-
+print(Extraction.getNasdaq(my_APIKEY,my_Path))
 
 
 
@@ -121,7 +121,6 @@ def formatData():
         DicoList[i] = result[0]
         DicoList[i+1] = result[1]
     for i in range(len(DicoList)-1,1, -1):
-        print("here")
         result = removeSomeDate(DicoList[i],DicoList[i-1])
         DicoList[i] = result[0]
         DicoList[i-1] = result[1]
