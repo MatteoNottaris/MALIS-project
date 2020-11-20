@@ -7,17 +7,19 @@
 #Importation of packages
 from alpha_vantage.foreignexchange import ForeignExchange
 from alpha_vantage.techindicators import TechIndicators
-from alpha_vantage.timeseries import TimeSeries
 
 import yfinance as yf
+from yahoofinancials import YahooFinancials
+
 import datetime 
+import pandas as pd
 
 
 
 
 
 
-#This function returns the data from the RSI indicator
+#This function returns the data from the RSI indicator for EURUSD every day
 def getRSI (APIKEY, Path):
     AlphVantage = TechIndicators(key = APIKEY, output_format = 'pandas')
     data, meta_data = AlphVantage.get_rsi(symbol='EURUSD', interval='daily', time_period=14, series_type = 'high')
@@ -29,8 +31,8 @@ def getRSI (APIKEY, Path):
     return data
 
 
-#This function returns the data from the dual currency cur1/cur2 every WEEK
-def getDualCurrency (APIKEY, Path):
+#This function returns the data from the dual currency EURUSD every day
+def getEURUSD (APIKEY, Path):
     AlphaVantage = ForeignExchange(key=APIKEY,output_format='pandas')
     data, meta_data = AlphaVantage.get_currency_exchange_daily(from_symbol='EUR',to_symbol='USD')
     #extracting the datetimeIndex, converting it to np.array and then adding it to data
@@ -40,6 +42,8 @@ def getDualCurrency (APIKEY, Path):
     #converting data to excel, more readable
     data.to_excel(Path + 'EURUSD.xlsx', index = False)
     return (data)
+
+
 
 
 #This function returns the data from the NASDAQ every day
@@ -158,3 +162,36 @@ def getCAC40(Path):
     #converting data to excel, more readable
     data.to_excel(Path + 'CAC40.xlsx', index = False)
     return (data)
+
+
+
+#This function returns the data from the GOLD every day
+def getGOLD(Path):
+    todayDate = datetime.date.today().strftime("%Y-%m-%d")
+    yahoo_financials_commodities = YahooFinancials('GC=F')
+    data = yahoo_financials_commodities.get_historical_price_data('2000-01-01', todayDate, 'daily')
+    new_array=[]
+    for item in data['GC=F']['prices']:
+        if item['open'] != '':
+            Date = datetime.date.fromtimestamp(item['date']).strftime('%Y-%m-%d')
+            new_array.append([Date,item['open']])
+    #converting new_array to excel, more readable
+    new_array = pd.DataFrame(new_array)
+    new_array.to_excel(Path + 'GOLD.xlsx', index = False)
+    return ()
+
+
+#This function returns the data from the OIL every day
+def getOIL(Path):
+    todayDate = datetime.date.today().strftime("%Y-%m-%d")
+    yahoo_financials_commodities = YahooFinancials('CL=F')
+    data = yahoo_financials_commodities.get_historical_price_data('2000-01-01', todayDate, 'daily')
+    new_array=[]
+    for item in data['CL=F']['prices']:
+        if item['open']:
+            Date = datetime.date.fromtimestamp(item['date']).strftime('%Y-%m-%d')
+            new_array.append([Date,item['open']])
+    #converting new_array to excel, more readable
+    new_array = pd.DataFrame(new_array)
+    new_array.to_excel(Path + 'OIL.xlsx', index = False)
+    return ()

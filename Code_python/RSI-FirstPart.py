@@ -58,7 +58,7 @@ def updateFiles ():
     Extraction.getRSI(my_APIKEY, my_Path)
     
     #updating the EURUSD file
-    Extraction.getDualCurrency(my_APIKEY, my_Path)
+    Extraction.getEURUSD(my_APIKEY, my_Path)
     
     #updating the NASDAQ file
     Extraction.getNASDAQ(my_Path)
@@ -89,6 +89,12 @@ def updateFiles ():
     
     #updating the CAC40 file
     Extraction.getCAC40(my_Path)
+    
+    #updating the XAUUSD file
+    Extraction.getGOLD(my_Path)
+    
+    #updating the OIL file
+    Extraction.getOIL(my_Path)
     
     return()
 
@@ -140,7 +146,7 @@ def formatData():
         result = removeSomeDate(DicoList[i],DicoList[i+1])
         DicoList[i] = result[0]
         DicoList[i+1] = result[1]
-    for i in range(len(DicoList)-1,1, -1):
+    for i in range(len(DicoList)-1,0, -1):
         result = removeSomeDate(DicoList[i],DicoList[i-1])
         DicoList[i] = result[0]
         DicoList[i-1] = result[1]
@@ -192,7 +198,6 @@ def intersectionDate (set1, set2):
 #This function is removing the date present in Dico1 and not in Dico2 and vice versa
 def removeSomeDate (Dico1,Dico2):
     for index in Dico1.items():
-        print(index)
         if not Dico2.get(index[0]):
             Dico1 = Dico1.drop(labels = index[0])
     for index in Dico2.items():
@@ -204,8 +209,6 @@ def removeSomeDate (Dico1,Dico2):
 
 
 #                                   IV) Tools
-
-
 
 
 
