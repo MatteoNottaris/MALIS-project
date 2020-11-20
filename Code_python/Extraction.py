@@ -28,21 +28,7 @@ def getRSI (APIKEY, Path):
     data.insert(0, 'date', new_array)
     #converting data to excel, more readable
     data.to_excel(Path + 'RSI.xlsx', index = False)
-    return data
-
-
-#This function returns the data from the dual currency EURUSD every day
-def getEURUSD (APIKEY, Path):
-    AlphaVantage = ForeignExchange(key=APIKEY,output_format='pandas')
-    data, meta_data = AlphaVantage.get_currency_exchange_daily(from_symbol='EUR',to_symbol='USD')
-    #extracting the datetimeIndex, converting it to np.array and then adding it to data
-    new_array = data.index.strftime('%Y-%m-%d')
-    data.insert(0, 'date', new_array)
-    data = data[::-1]
-    #converting data to excel, more readable
-    data.to_excel(Path + 'EURUSD.xlsx', index = False)
-    return (data)
-
+    return ()
 
 
 
@@ -55,7 +41,7 @@ def getNASDAQ (Path):
     data.insert(0, 'date', new_array)
     #converting data to excel, more readable
     data.to_excel(Path + 'NASDAQ.xlsx', index = False)
-    return (data)
+    return ()
 
 
 #This function returns the data from the DOwJones every day
@@ -67,7 +53,7 @@ def getDOWJONES (Path):
     data.insert(0, 'date', new_array)
     #converting data to excel, more readable
     data.to_excel(Path + 'DOWJONES.xlsx', index = False)
-    return (data)
+    return ()
 
 
 #This function returns the data from the SP500 every day
@@ -79,7 +65,7 @@ def getSP500(Path):
     data.insert(0, 'date', new_array)
     #converting data to excel, more readable
     data.to_excel(Path + 'SP500.xlsx', index = False)
-    return (data)
+    return ()
 
 #This function returns the data from the FTSE100 every day
 def getFTSE100(Path):
@@ -90,7 +76,7 @@ def getFTSE100(Path):
     data.insert(0, 'date', new_array)
     #converting data to excel, more readable
     data.to_excel(Path + 'FTSE100.xlsx', index = False)
-    return (data)
+    return ()
 
 #This function returns the data from the DAX every day
 def getDAX(Path):
@@ -101,7 +87,7 @@ def getDAX(Path):
     data.insert(0, 'date', new_array)
     #converting data to excel, more readable
     data.to_excel(Path + 'DAX.xlsx', index = False)
-    return (data)
+    return ()
 
 
 #This function returns the data from the EUROSTOXX600 every day
@@ -113,7 +99,7 @@ def getSTOXX600(Path):
     data.insert(0, 'date', new_array)
     #converting data to excel, more readable
     data.to_excel(Path + 'STOXX600.xlsx', index = False)
-    return (data)
+    return ()
 
 
 #This function returns the data from the EUROSTOXX50 every day
@@ -125,7 +111,7 @@ def getSTOXX50E(Path):
     data.insert(0, 'date', new_array)
     #converting data to excel, more readable
     data.to_excel(Path + 'STOXX50E.xlsx', index = False)
-    return (data)
+    return ()
 
 
 #This function returns the data from the HSCEI every day
@@ -137,7 +123,7 @@ def getHSCEI(Path):
     data.insert(0, 'date', new_array)
     #converting data to excel, more readable
     data.to_excel(Path + 'HSCEI.xlsx', index = False)
-    return (data)
+    return ()
 
 
 #This function returns the data from the HSCEI every day
@@ -149,7 +135,7 @@ def getNIKKEI(Path):
     data.insert(0, 'date', new_array)
     #converting data to excel, more readable
     data.to_excel(Path + 'NIKKEI.xlsx', index = False)
-    return (data)
+    return ()
 
 
 #This function returns the data from the HSCEI every day
@@ -161,8 +147,19 @@ def getCAC40(Path):
     data.insert(0, 'date', new_array)
     #converting data to excel, more readable
     data.to_excel(Path + 'CAC40.xlsx', index = False)
-    return (data)
+    return ()
 
+
+#This function returns the data from the VIX every day
+def getVIX(Path):
+    todayDate = datetime.date.today().strftime("%Y-%m-%d")
+    data = yf.download("^VIX", start= "2000-01-01", end = todayDate, interval = "1d")
+    #extracting the datetimeIndex, converting it to np.array and then adding it to data
+    new_array = data.index.strftime('%Y-%m-%d')
+    data.insert(0, 'date', new_array)
+    #converting data to excel, more readable
+    data.to_excel(Path + 'VIX.xlsx', index = False)
+    return ()
 
 
 #This function returns the data from the GOLD every day
@@ -195,3 +192,53 @@ def getOIL(Path):
     new_array = pd.DataFrame(new_array)
     new_array.to_excel(Path + 'OIL.xlsx', index = False)
     return ()
+
+#This function returns the data from the EURUSD every day
+def getEURUSD(Path):
+    todayDate = datetime.date.today().strftime("%Y-%m-%d")
+    yahoo_financials_currencies = YahooFinancials('EURUSD=X')
+    data = yahoo_financials_currencies.get_historical_price_data('2000-01-01', todayDate, 'daily')
+    new_array=[]
+    for item in data['EURUSD=X']['prices']:
+        if item['open']:
+            Date = datetime.date.fromtimestamp(item['date']).strftime('%Y-%m-%d')
+            new_array.append([Date,item['open']])
+    #converting new_array to excel, more readable
+    new_array = pd.DataFrame(new_array)
+    new_array.to_excel(Path + 'EURUSD.xlsx', index = False)
+    return ()
+
+
+
+#This function returns the data from the USDJPY every day
+def getUSDJPY(Path):
+    todayDate = datetime.date.today().strftime("%Y-%m-%d")
+    yahoo_financials_currencies = YahooFinancials('USDJPY=X')
+    data = yahoo_financials_currencies.get_historical_price_data('2000-01-01', todayDate, 'daily')
+    new_array=[]
+    for item in data['USDJPY=X']['prices']:
+        if item['open']:
+            Date = datetime.date.fromtimestamp(item['date']).strftime('%Y-%m-%d')
+            new_array.append([Date,item['open']])
+    #converting new_array to excel, more readable
+    new_array = pd.DataFrame(new_array)
+    new_array.to_excel(Path + 'USDJPY.xlsx', index = False)
+    return ()
+
+
+
+#This function returns the data from the USDCNY every day
+def getUSDCNY(Path):
+    todayDate = datetime.date.today().strftime("%Y-%m-%d")
+    yahoo_financials_currencies = YahooFinancials('USDCNY=X')
+    data = yahoo_financials_currencies.get_historical_price_data('2000-01-01', todayDate, 'daily')
+    new_array=[]
+    for item in data['USDCNY=X']['prices']:
+        if item['open']:
+            Date = datetime.date.fromtimestamp(item['date']).strftime('%Y-%m-%d')
+            new_array.append([Date,item['open']])
+    #converting new_array to excel, more readable
+    new_array = pd.DataFrame(new_array)
+    new_array.to_excel(Path + 'USDCNY.xlsx', index = False)
+    return ()
+

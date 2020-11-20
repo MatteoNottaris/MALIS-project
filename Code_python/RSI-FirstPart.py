@@ -34,7 +34,7 @@ my_Path = 'C:/Users/matno/Desktop/Télecom/2A/MALIS/Project/GIT/MALIS-project/Co
 def main ():
     
     #first extract data and update the corresponding files
-    updateFiles()
+    #updateFiles()
     
 
     #creating a panda dictionnary with all data
@@ -58,7 +58,7 @@ def updateFiles ():
     Extraction.getRSI(my_APIKEY, my_Path)
     
     #updating the EURUSD file
-    Extraction.getEURUSD(my_APIKEY, my_Path)
+    Extraction.getEURUSD(my_Path)
     
     #updating the NASDAQ file
     Extraction.getNASDAQ(my_Path)
@@ -95,6 +95,15 @@ def updateFiles ():
     
     #updating the OIL file
     Extraction.getOIL(my_Path)
+    
+    #updating the USDJPY file
+    Extraction.getUSDJPY(my_Path)
+    
+    #updating the USDCNY file
+    Extraction.getUSDCNY(my_Path)
+    
+    #updating the VIX file
+    Extraction.getVIX(my_Path)
     
     return()
 
