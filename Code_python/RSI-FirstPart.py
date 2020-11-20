@@ -23,20 +23,10 @@ import datetime
 my_APIKEY = '9AZS79EDFOZ47YKP'
 
 #Useful variables
-my_interval = 'weekly'
-my_sj = 'EURUSD'
-my_moment = 'high'
-my_time_period = 14
-currency1 = 'EUR'
-currency2 = 'USD'
 my_Path = 'C:/Users/matno/Desktop/Télecom/2A/MALIS/Project/GIT/MALIS-project/Code_python/Data/'
 
-parameter1 = 70
-parameter2 = 30
-InitAmount = 1000000
 
 
-print(Extraction.getNasdaq(my_APIKEY,my_Path))
 
 
 
@@ -44,7 +34,7 @@ print(Extraction.getNasdaq(my_APIKEY,my_Path))
 def main ():
     
     #first extract data and update the corresponding files
-    #updateFiles()
+    updateFiles()
     
 
     #creating a panda dictionnary with all data
@@ -64,11 +54,41 @@ def main ():
 #This function is extracting all the data from AlphaVantage and updating the corresponding files on the computer
 def updateFiles ():
     
-    #updating the RSIfile
-    Extraction.getRSI(my_APIKEY, my_interval, my_sj, my_moment, my_time_period, my_Path)
+    #updating the RSI file
+    Extraction.getRSI(my_APIKEY, my_Path)
     
-    #updating the EURUSDfile
-    Extraction.getDualCurrency(my_APIKEY, currency1, currency2, my_Path)
+    #updating the EURUSD file
+    Extraction.getDualCurrency(my_APIKEY, my_Path)
+    
+    #updating the NASDAQ file
+    Extraction.getNASDAQ(my_Path)
+    
+    #updating the DOWJONES file
+    Extraction.getDOWJONES(my_Path)
+    
+    #updating the SP500 file
+    Extraction.getSP500(my_Path)
+    
+    #updating the FSTE100 file
+    Extraction.getFTSE100(my_Path)
+    
+    #updating the DAX file
+    Extraction.getDAX(my_Path)
+    
+    #updating the STOXX600 file
+    Extraction.getSTOXX600(my_Path)
+    
+    #updating the STOXX50E file
+    Extraction.getSTOXX50E(my_Path)
+    
+    #updating the HSCEI file
+    Extraction.getHSCEI(my_Path)
+    
+    #updating the NIKKEI file
+    Extraction.getNIKKEI(my_Path)
+    
+    #updating the CAC40 file
+    Extraction.getCAC40(my_Path)
     
     return()
 
@@ -172,6 +192,7 @@ def intersectionDate (set1, set2):
 #This function is removing the date present in Dico1 and not in Dico2 and vice versa
 def removeSomeDate (Dico1,Dico2):
     for index in Dico1.items():
+        print(index)
         if not Dico2.get(index[0]):
             Dico1 = Dico1.drop(labels = index[0])
     for index in Dico2.items():
@@ -205,7 +226,7 @@ def perf(amount1, amount2):
         #outputs : if we have 1 in return it means it is oversold
             #: if we have 2 in return it means the sj is overbought
             #: if we have -1 in return it means the RSI cannot give any advice
-def RSIsignal(RSIval):
+def RSIsignal(RSIval, parameter1, parameter2):
     if RSIval >= parameter2:
         return (2)
     elif RSIval<= parameter1:
@@ -218,4 +239,4 @@ def RSIsignal(RSIval):
 
 
 
-#print(main())
+print(main())
