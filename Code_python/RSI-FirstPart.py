@@ -105,6 +105,16 @@ def updateFiles ():
     #updating the VIX file
     Extraction.getVIX(my_Path)
     
+    #updating the DOLLAR INDEX file
+    Extraction.getDOLLARINDEX(my_Path)
+    
+    #updating the TAUX US 10 file
+    Extraction.getTAUX10US(my_Path)
+    
+    #updating the TAUX US 5 file
+    Extraction.getTAUX5US(my_Path)
+    
+    
     return()
 
 

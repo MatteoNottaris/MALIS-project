@@ -162,6 +162,43 @@ def getVIX(Path):
     return ()
 
 
+#This function returns the data from the DOLLAR INDEX every day
+def getDOLLARINDEX(Path):
+    todayDate = datetime.date.today().strftime("%Y-%m-%d")
+    data = yf.download("DX-Y.NYB", start= "2000-01-01", end = todayDate, interval = "1d")
+    print(data)
+    #extracting the datetimeIndex, converting it to np.array and then adding it to data
+    new_array = data.index.strftime('%Y-%m-%d')
+    data.insert(0, 'date', new_array)
+    #converting data to excel, more readable
+    data.to_excel(Path + 'DOLLARINDEX.xlsx', index = False)
+    return ()
+
+
+#This function returns the data from the TAUX 10 US every day
+def getTAUX10US(Path):
+    todayDate = datetime.date.today().strftime("%Y-%m-%d")
+    data = yf.download("^TNX", start= "2000-01-01", end = todayDate, interval = "1d")
+    #extracting the datetimeIndex, converting it to np.array and then adding it to data
+    new_array = data.index.strftime('%Y-%m-%d')
+    data.insert(0, 'date', new_array)
+    #converting data to excel, more readable
+    data.to_excel(Path + 'TAUX10US.xlsx', index = False)
+    return ()
+
+
+#This function returns the data from the TAUX 5 US every day
+def getTAUX5US(Path):
+    todayDate = datetime.date.today().strftime("%Y-%m-%d")
+    data = yf.download("^FVX", start= "2000-01-01", end = todayDate, interval = "1d")
+    #extracting the datetimeIndex, converting it to np.array and then adding it to data
+    new_array = data.index.strftime('%Y-%m-%d')
+    data.insert(0, 'date', new_array)
+    #converting data to excel, more readable
+    data.to_excel(Path + 'TAUX5US.xlsx', index = False)
+    return ()
+
+
 #This function returns the data from the GOLD every day
 def getGOLD(Path):
     todayDate = datetime.date.today().strftime("%Y-%m-%d")
