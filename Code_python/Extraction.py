@@ -166,7 +166,6 @@ def getVIX(Path):
 def getDOLLARINDEX(Path):
     todayDate = datetime.date.today().strftime("%Y-%m-%d")
     data = yf.download("DX-Y.NYB", start= "2000-01-01", end = todayDate, interval = "1d")
-    print(data)
     #extracting the datetimeIndex, converting it to np.array and then adding it to data
     new_array = data.index.strftime('%Y-%m-%d')
     data.insert(0, 'date', new_array)

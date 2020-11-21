@@ -23,8 +23,8 @@ import datetime
 my_APIKEY = '9AZS79EDFOZ47YKP'
 
 #Useful variables
-my_Path = 'C:/Users/matno/Desktop/Télecom/2A/MALIS/Project/GIT/MALIS-project/Code_python/Data/'
-
+my_Path = 'C:/Users/matno/Desktop/Télecom/2A/MALIS/Project/GIT/MALIS-project/Code_python/Data/extraction/'
+initamount = 1000000 
 
 
 
@@ -39,6 +39,11 @@ def main ():
 
     #creating a panda dictionnary with all data
     DataDico = formatData()
+    
+    #generating array with couples of parameters and their market situation
+    result = BestSituations(DataDico)
+    result = pd.DataFrame(result)
+    result.to_excel(my_Path.replace('extraction/','',1) + 'training/training_set.xlsx', index = False)
 
     return()
 
@@ -224,22 +229,73 @@ def removeSomeDate (Dico1,Dico2):
             Dico2 = Dico2.drop(index[0])
     return (Dico1, Dico2)
 
+
+
+
 ##########################################################################################################################
 
 
-#                                   IV) Tools
+#                                   IV) Now we need to get for a tuple of parameters the best market situation
 
 
 
+def BestSituations (Dico):
+    files = getFiles(my_Path)
+    resultArray = []
+    tampon = ['Best date', 'par1', 'par2']
+    date_already_used = []
+    for i in range(len(files)):
+        if files[i] != 'RSI':
+            tampon.append(files[i])
+    resultArray.append(tampon)
+    for i in range (80):
+        par2 = 51 + i * 0.5
+        par1 = 49 - i * 0.5
+        date = BestDate(par1, par2, Dico, date_already_used)
+        date_already_used.append(date)
+        tampon = [date, par1, par2]
+        for j in range (len(files)):
+            if files[j] != 'RSI' :
+                tampon.append(Dico.get(files[j]).get(date))
+        resultArray.append(tampon)
+    return(resultArray)
 
+#This function is returning the best date corresponding to the best market situation for the two input parameters
+def BestDate(par1, par2, Dico, dateUsed):
+    bestDate = ''
+    maxperf = 0
+    RSIDico = Dico.get('RSI')
+    date = RSIDico.index
+    EURUSDDico = Dico.get('EURUSD')
+    rowNB = 0
+    for item in RSIDico.items():
+        signal = RSIsignal(item[1], par1, par2)
+        if signal == 1 and rowNB < len(date)-1 and item[0] not in dateUsed:
+            amount = initamount * EURUSDDico.get(item[0])
+            amount = amount / EURUSDDico.get(date[rowNB+1])
+            perf = perfCalcul(initamount, amount)
+            if perf > maxperf:
+                bestDate = item[0]
+                maxperf = perf
+        elif signal == 2 and rowNB < len(date)-1 and item[0] not in dateUsed:
+            amount = initamount / EURUSDDico.get(item[0])
+            amount = amount * EURUSDDico.get(date[rowNB+1])
+            perf = perfCalcul(initamount, amount)
+            if perf > maxperf:
+                bestDate = item[0]
+                maxperf = perf
+        rowNB += 1
+    return(bestDate)
+            
+            
+            
+            
 #This function is calculating the performance 
         #amount1 is the actual amount we have at the end of the week when we listened to the RSI 
         #amount2 is the amount we would have if we wasn't listening to RSI
-def perf(amount1, amount2):
-    perf = (amount1 - amount2)/amount1
+def perfCalcul(amount1, amount2):
+    perf = (amount2 - amount1)/amount1
     return(perf * 100)
-
-
 
 
 #This function is returning a RSI signal
