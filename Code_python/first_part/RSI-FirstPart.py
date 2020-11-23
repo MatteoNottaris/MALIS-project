@@ -12,7 +12,7 @@
 
 #Importation of packages
 import os 
-os.chdir('C:/Users/matno/Desktop/Télecom/2A/MALIS/Project/GIT/MALIS-project/Code_python')
+os.chdir('C:/Users/matno/Desktop/Télecom/2A/MALIS/Project/GIT/MALIS-project/Code_python/first_part/')
 import Extraction
 import numpy as np
 import pandas as pd
@@ -34,7 +34,7 @@ initamount = 1000000
 def main ():
     
     #first extract data and update the corresponding files
-    #updateFiles()
+    updateFiles()
     
 
     #creating a panda dictionnary with all data
@@ -249,15 +249,16 @@ def BestSituations (Dico):
             tampon.append(files[i])
     resultArray.append(tampon)
     for i in range (80):
-        par2 = 51 + i * 0.5
-        par1 = 49 - i * 0.5
+        par2 = 90 -  i * 0.5
+        par1 = 10 + i * 0.5
         date = BestDate(par1, par2, Dico, date_already_used)
-        date_already_used.append(date)
-        tampon = [date, par1, par2]
-        for j in range (len(files)):
-            if files[j] != 'RSI' :
-                tampon.append(Dico.get(files[j]).get(date))
-        resultArray.append(tampon)
+        if date != '':
+            date_already_used.append(date)
+            tampon = [date, par1, par2]
+            for j in range (len(files)):
+                if files[j] != 'RSI' :
+                    tampon.append(Dico.get(files[j]).get(date))
+            resultArray.append(tampon)
     return(resultArray)
 
 #This function is returning the best date corresponding to the best market situation for the two input parameters
@@ -270,14 +271,18 @@ def BestDate(par1, par2, Dico, dateUsed):
     rowNB = 0
     for item in RSIDico.items():
         signal = RSIsignal(item[1], par1, par2)
-        if signal == 1 and rowNB < len(date)-1 and item[0] not in dateUsed:
+        count = 0
+        for i in range(len(dateUsed)):
+            if dateUsed[i] == item[0]:
+                count+=1
+        if signal == 1 and rowNB < len(date)-1 and count<=1:
             amount = initamount * EURUSDDico.get(item[0])
             amount = amount / EURUSDDico.get(date[rowNB+1])
             perf = perfCalcul(initamount, amount)
             if perf > maxperf:
                 bestDate = item[0]
                 maxperf = perf
-        elif signal == 2 and rowNB < len(date)-1 and item[0] not in dateUsed:
+        elif signal == 2 and rowNB < len(date)-1 and count<=1:
             amount = initamount / EURUSDDico.get(item[0])
             amount = amount * EURUSDDico.get(date[rowNB+1])
             perf = perfCalcul(initamount, amount)
