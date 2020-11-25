@@ -47,7 +47,7 @@ class MLP(Layer): # Multi Layer Perceptron
         
         for i in range(0,len(neurons_per_layer)-1) :
             self.layer[i]=Layer()
-            self.layer[i].W=(100)*np.random.randn(neurons_per_layer[i+1],neurons_per_layer[i])
+            self.layer[i].W=(10**(-1))*np.random.randn(neurons_per_layer[i+1],neurons_per_layer[i])
             self.layer[i].b=np.zeros((1,neurons_per_layer[i+1]))
             self.layer[i].a=np.zeros((1,neurons_per_layer[i+1])) 
             self.layer[i].z=np.zeros((1,neurons_per_layer[i+1]))

@@ -34,7 +34,7 @@ initamount = 1000000
 def main ():
     
     #first extract data and update the corresponding files
-    updateFiles()
+    #updateFiles()
     
 
     #creating a panda dictionnary with all data
@@ -248,51 +248,67 @@ def BestSituations (Dico):
         if files[i] != 'RSI':
             tampon.append(files[i])
     resultArray.append(tampon)
+    years = getYears(Dico.get('RSI'))
     for i in range (80):
         par2 = 90 -  i * 0.5
         par1 = 10 + i * 0.5
-        date = BestDate(par1, par2, Dico, date_already_used)
-        if date != '':
-            date_already_used.append(date)
-            tampon = [date, par1, par2]
-            for j in range (len(files)):
-                if files[j] != 'RSI' :
-                    tampon.append(Dico.get(files[j]).get(date))
-            resultArray.append(tampon)
+        dates = BestDates(par1, par2, Dico, date_already_used, years)[0]
+        dateUsed = BestDates(par1, par2, Dico, date_already_used, years)[1]
+        for p in range (len(dates)):
+            if dates[p] != '':
+                tampon = [dates[p], par1, par2]
+                for j in range (len(files)):
+                    if files[j] != 'RSI' :
+                        tampon.append(Dico.get(files[j]).get(dates[p]))
+                resultArray.append(tampon)
     return(resultArray)
 
 #This function is returning the best date corresponding to the best market situation for the two input parameters
-def BestDate(par1, par2, Dico, dateUsed):
-    bestDate = ''
-    maxperf = 0
+def BestDates(par1, par2, Dico, dateUsed, years):
+    bestDates = []
     RSIDico = Dico.get('RSI')
     date = RSIDico.index
     EURUSDDico = Dico.get('EURUSD')
-    rowNB = 0
-    for item in RSIDico.items():
-        signal = RSIsignal(item[1], par1, par2)
-        count = 0
-        for i in range(len(dateUsed)):
-            if dateUsed[i] == item[0]:
-                count+=1
-        if signal == 1 and rowNB < len(date)-1 and count<=1:
-            amount = initamount * EURUSDDico.get(item[0])
-            amount = amount / EURUSDDico.get(date[rowNB+1])
-            perf = perfCalcul(initamount, amount)
-            if perf > maxperf:
-                bestDate = item[0]
-                maxperf = perf
-        elif signal == 2 and rowNB < len(date)-1 and count<=1:
-            amount = initamount / EURUSDDico.get(item[0])
-            amount = amount * EURUSDDico.get(date[rowNB+1])
-            perf = perfCalcul(initamount, amount)
-            if perf > maxperf:
-                bestDate = item[0]
-                maxperf = perf
-        rowNB += 1
-    return(bestDate)
+    for j in range(len(years)):
+        bestDate = ''
+        maxperf = 0
+        rowNB = 0
+        for item in RSIDico.items():
+            if item[0][0:4] == years[j]:
+                signal = RSIsignal(item[1], par1, par2)
+                count = 0
+                for i in range(len(dateUsed)):
+                    if dateUsed[i] == item[0]:
+                        count+=1
+                if signal == 1 and rowNB < len(date)-1 and count<=1:
+                    amount = initamount * EURUSDDico.get(item[0])
+                    amount = amount / EURUSDDico.get(date[rowNB+1])
+                    perf = perfCalcul(initamount, amount)
+                    if perf > maxperf:
+                        bestDate = item[0]
+                        maxperf = perf
+                elif signal == 2 and rowNB < len(date)-1 and count<=1:
+                    amount = initamount / EURUSDDico.get(item[0])
+                    amount = amount * EURUSDDico.get(date[rowNB+1])
+                    perf = perfCalcul(initamount, amount)
+                    if perf > maxperf:
+                        bestDate = item[0]
+                        maxperf = perf
+            rowNB += 1
+        bestDates.append(bestDate)
+        dateUsed.append(bestDate)
+    return(bestDates, dateUsed)
             
-            
+
+
+#This function is returning the years present in the data set
+def getYears(Dico):
+    years =[]
+    for item in Dico.items():
+        if item[0][0:4] not in years:
+            years.append(item[0][0:4])
+    return(years)
+    
             
             
 #This function is calculating the performance 

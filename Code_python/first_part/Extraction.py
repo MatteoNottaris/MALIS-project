@@ -5,7 +5,6 @@
 
 
 #Importation of packages
-from alpha_vantage.foreignexchange import ForeignExchange
 from alpha_vantage.techindicators import TechIndicators
 
 import yfinance as yf

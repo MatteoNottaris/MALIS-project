@@ -9,8 +9,6 @@
 
 from NeuralNetwork_class import MLP
 import numpy as np
-from sklearn import datasets
-import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -73,7 +71,7 @@ def forward(self, x) :
         self.layer[j].a = np.array(self.layer[j - 1].z @ self.layer[j].W.T + self.layer[j].b, dtype = np.float64)
         self.layer[j].z = MLP.sigmoid(self.layer[j].a)
             
-    y_hat = np.abs(self.layer[len(self.layer) - 1].z)*100
+    y_hat = self.layer[len(self.layer) - 1].z
         
 
     return y_hat
@@ -135,9 +133,6 @@ def accuracy(y_hat,y) :
     OUTPUTS:
     - acc : the accuracy value between 0 and 1
     '''
-
-    print(y_hat)
-    print(y)
     
     N = np.size(y_hat,0)
     C = np.size(y_hat,1)
@@ -145,7 +140,7 @@ def accuracy(y_hat,y) :
     for i in range (N) :
         check = True
         for j in range (C):
-            if np.abs(y_hat[i][j]-y[i][j]) > 10 :
+            if np.abs(y_hat[i][j]-y[i][j]) > 0.05 :
                 check = False
         if check :
             acc = acc +1
@@ -249,23 +244,23 @@ def gettingSets(file):
 
 def train():
     # Neural Network (NN) parameters
-    epochs=1
-    learning_rate=6
+    epochs=500
+    learning_rate=0.6
     verbose=True
     print_every_k=100
     
     set = gettingSets(my_file)
     x_train = set[0]
-    y_train = set[1]
+    y_train = set[1]/100
     x_test = set[2]
-    y_test = set[3]
+    y_test = set[3]/100
     
     # Initialization of the NN
         #first value of the vecteur is the number of input (=19 corresponding to the number of indicator for a market photo)
         #second value is the number of neuron on the first layer
         #.....
         # last value is the number of neuron on the last layer (=2 corresponding to the RSI parameters)
-    NN1 = MLP([19, 15, 2])
+    NN1 = MLP([19, 20, 2])
     print('TRAINING')
     # Training
     NN1.training(x_train,y_train,learning_rate,epochs,verbose,print_every_k)
