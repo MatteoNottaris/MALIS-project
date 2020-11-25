@@ -226,7 +226,7 @@ class MLP(Layer): # Multi Layer Perceptron
             
             # if verbose is True print the results every print_every_k
             if ((verbose == True) and (epoch%print_every_k==0)):
-                print('Epoch %d : loss = %.5e, accuracy = %.2f %%' %(epoch,loss[epoch],100*accuracy[epoch]))
+                print('Epoch %d : loss = %.5e %%' %(epoch,loss[epoch]))
 
         self.losses=loss
         self.accuracies=accuracy
