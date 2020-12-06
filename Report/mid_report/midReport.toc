@@ -1,8 +1,8 @@
-\contentsline {section}{\numberline {1}Project origin}{2}{section.1}%
-\contentsline {section}{\numberline {2}Project description}{2}{section.2}%
-\contentsline {section}{\numberline {3}Extraction of the data sets}{3}{section.3}%
-\contentsline {section}{\numberline {4}Creation of a new data set}{3}{section.4}%
-\contentsline {section}{\numberline {5}Use of a Neural Network}{4}{section.5}%
-\contentsline {section}{\numberline {6}Sharing of the work}{5}{section.6}%
-\contentsline {section}{\numberline {7}Annexe}{5}{section.7}%
-\contentsline {subsection}{\numberline {7.1}Annexe 1}{5}{subsection.7.1}%
+\contentsline {section}{\numberline {1}Project origin}{2}{section.1}% 
+\contentsline {section}{\numberline {2}Project description}{2}{section.2}% 
+\contentsline {section}{\numberline {3}Extraction of the data sets}{3}{section.3}% 
+\contentsline {section}{\numberline {4}Creation of a new data set}{3}{section.4}% 
+\contentsline {section}{\numberline {5}Use of a Neural Network}{4}{section.5}% 
+\contentsline {section}{\numberline {6}Sharing of the work}{4}{section.6}% 
+\contentsline {section}{\numberline {7}Annexe}{5}{section.7}% 
+\contentsline {subsection}{\numberline {7.1}Annexe 1}{5}{subsection.7.1}% 
