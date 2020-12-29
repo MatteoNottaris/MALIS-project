@@ -20,7 +20,7 @@ def gettingSets(file):
     dataSet = dataSet[1:,:]
     
     dataSet=np.random.permutation(dataSet)
-    n = int(np.floor(0.9 * len(dataSet)))
+    n = int(np.floor(0.9* len(dataSet)))
     X_train = dataSet[:n,2:]
     X_test = dataSet[n:,2:]
     Y_train = dataSet[:n,:1]
@@ -29,29 +29,38 @@ def gettingSets(file):
     
     return(X_train, Y_train, X_test, Y_test)
 
-def neuralNetwork():
-    dataSet = pd.read_excel(my_file)
-    dataSet = dataSet.to_numpy()
-    dataSet = dataSet[:,1:]
-    dataSet = dataSet[1:,:]
+def neuralNetwork(layer,iterations,rate):
+    #dataSet = pd.read_excel(my_file)
+    #dataSet = dataSet.to_numpy()
+    #dataSet = dataSet[:,1:]
+    #dataSet = dataSet[1:,:]
     
-    X = dataSet[2:,:]
-    Y = dataSet[:2,:]
+    #X = dataSet[2:,:]
+    #Y = dataSet[:2,:]
     
-    X_train, X_test, Y_train, Y_test = train_test_split (X, Y, test_size = 0.30, random_state=21)
+    #X_train, X_test, Y_train, Y_test = train_test_split (X, Y, test_size = 0.30, random_state=21)
+    X_train, Y_train, X_test, Y_test = gettingSets(my_file)
     
-    regr = MLPRegressor(hidden_layer_sizes= 3, max_iter= 6000, learning_rate_init=0.1,activation='identity',random_state = 1).fit(X_train,Y_train)
-    print(regr.predict(X_test))
-    print(regr.score(X_test, Y_test))
-    kfold = KFold(n_splits=15, random_state=21)
-    cv_results = cross_val_score(regr, X_train, Y_train, cv=kfold, scoring='r2')
-    plt.plot(cv_results)
-    plt.show
-    return()
-    
-print(neuralNetwork())
+    regr = MLPRegressor(hidden_layer_sizes= layer, max_iter= iterations, learning_rate_init=rate,activation='tanh',random_state = 1).fit(X_train,Y_train)
+    return(regr.score(X_test, Y_test))
 
 
+def find_parameters():
+    parameters=[0,0,0]
+    maxR2 = 0 
+    for i in range (1,5):
+        for j in range (1000,10000,500):
+            for p in range(1,100,5):
+                print(i)
+                layer = i
+                iterations = j
+                rate = p/1000
+                
+                score = neuralNetwork(layer, iterations, rate)
+                if score>maxR2:
+                    maxR2=score
+                    parameters=[i,j,p]
+    return(maxR2,parameters)
 
-
-
+print(find_parameters())
+                
