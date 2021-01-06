@@ -38,26 +38,32 @@ def neuralNetwork_param(file):
     'learning_rate': ['constant','adaptive'],
     }
 
-    gridsearchcv = GridSearchCV(regr, check_parameters,n_jobs=-1)
+    gridsearchcv = GridSearchCV(regr, check_parameters,n_jobs=-1,cv=5)
     gridsearchcv.fit(X_test, y_test)
     print('Best parameters found:\n', gridsearchcv.best_params_)
 
 print(neuralNetwork_param(my_file))
 
-def neuralNetwork_error(layer,func,rate,iters,file):
+def neuralNetwork_error(lrate,solv,layer,func,rate,iters,file):
     dataSet = pd.read_excel(file)
-    dataSet = dataSet.to_numpy()
-    dataSet = dataSet[:,1:]
-    dataSet = dataSet[1:,:]
+    dataSet = dataSet.drop([0],axis=0)
+    dataSet = dataSet.drop(columns=0, axis=1)
     
-    dataSet=np.random.permutation(dataSet)
-    X = dataSet[:,2:]
-    y = dataSet[:,:2]
+    X = dataSet.drop(columns=[1,2])
+    y = dataSet[[1,2]]
+    
     
     X_train,X_test,y_train,y_test=ms.train_test_split( X, y, test_size=0.20, random_state=0)
 
-    regr = MLPRegressor(activation=func,hidden_layer_sizes=layer,learning_rate_init=rate,max_iter = iters,random_state=1).fit(X_train,y_train)
+    regr = MLPRegressor(solver=solv,learning_rate=lrate,activation=func,hidden_layer_sizes=layer,alpha=rate,max_iter = iters,random_state=1).fit(X_train,y_train)
     
     output = regr.predict(X_test)
+    print(y_test)
+    print(output)
     
-    return(mean_squared_error(output, y_test))
+    return(mean_squared_error(output, y_test),mean_squared_error(regr.predict(X_train),y_train))
+
+#print(neuralNetwork_error('constant','sgd',4,'tanh', 0.5, 10000, my_file))
+#print(neuralNetwork_error('adaptive','sgd',3,'logistic', 0.0001, 10000, my_file))
+#print(neuralNetwork_error('constant','adam',3,'relu', 0.5, 10000, my_file))
+
