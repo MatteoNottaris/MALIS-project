@@ -11,7 +11,7 @@ from sklearn import model_selection as ms
 
 from sklearn.impute import SimpleImputer
 
-my_file = 'C:/Users/matno/Desktop/Télecom/2A/MALIS/Project/GIT/MALIS-project/Code_python/Data/training/training_set.xlsx'
+my_file = 'C:/Users/matno/Desktop/Télecom/2A/MALIS/Project/GIT/MALIS-project/Code_python/Data/training/training_setV2.xlsx'
 
 
 def neuralNetwork_param(file):
@@ -20,7 +20,12 @@ def neuralNetwork_param(file):
     dataSet = dataSet.drop(columns=0, axis=1)
     
     X = dataSet.drop(columns=[1,2])
-    y = dataSet[[1,2]]
+    y = dataSet[[1]]
+    print(y[1])
+    y['exp'] = np.exp(y[1].astype(int))
+    y = y[['exp']]
+    print(y)
+    
     
     
     X_train,X_test,y_train,y_test=ms.train_test_split( X, y, test_size=0.20, random_state=0)
@@ -32,7 +37,7 @@ def neuralNetwork_param(file):
 
     check_parameters = {
     'hidden_layer_sizes': layers,
-    'activation': ['tanh'],
+    'activation': ['logistic'],
     'solver': ['sgd', 'adam'],
     'alpha': [0.0001, 0.5],
     'learning_rate': ['constant','adaptive'],
@@ -42,7 +47,7 @@ def neuralNetwork_param(file):
     gridsearchcv.fit(X_test, y_test)
     print('Best parameters found:\n', gridsearchcv.best_params_)
 
-print(neuralNetwork_param(my_file))
+#print(neuralNetwork_param(my_file))
 
 def neuralNetwork_error(lrate,solv,layer,func,rate,iters,file):
     dataSet = pd.read_excel(file)
@@ -50,20 +55,25 @@ def neuralNetwork_error(lrate,solv,layer,func,rate,iters,file):
     dataSet = dataSet.drop(columns=0, axis=1)
     
     X = dataSet.drop(columns=[1,2])
-    y = dataSet[[1,2]]
-    
-    
+    y = dataSet[[1]]
+    y['2'] = 1000*(y[1].astype(int))
+    y = y[['2']]
+    print(y)
     X_train,X_test,y_train,y_test=ms.train_test_split( X, y, test_size=0.20, random_state=0)
 
     regr = MLPRegressor(solver=solv,learning_rate=lrate,activation=func,hidden_layer_sizes=layer,alpha=rate,max_iter = iters,random_state=1).fit(X_train,y_train)
     
-    output = regr.predict(X_test)
-    print(y_test)
-    print(output)
+    output = (regr.predict(X_test))/1000
+    y_test =(y_test)/1000
+    y_train = y_train/1000
     
-    return(mean_squared_error(output, y_test),mean_squared_error(regr.predict(X_train),y_train))
+    
+    print(output)
+    print(y_test)
+    
+    return(mean_squared_error(output, y_test),mean_squared_error(regr.predict(X_train)/1000,y_train))
 
-#print(neuralNetwork_error('constant','sgd',4,'tanh', 0.5, 10000, my_file))
-#print(neuralNetwork_error('adaptive','sgd',3,'logistic', 0.0001, 10000, my_file))
-#print(neuralNetwork_error('constant','adam',3,'relu', 0.5, 10000, my_file))
-
+#print(neuralNetwork_error('constant','sgd',1000,'tanh', 0.1, 10000, my_file))
+#print(neuralNetwork_error('constant','sgd',100,'logistic', 0.1, 10000, my_file))
+#print(neuralNetwork_error('constant','adam',100,'relu', 0.1, 10000, my_file))
+#print(neuralNetwork_error('adaptive','adam',10,'identity', 0.001, 10000, my_file))
