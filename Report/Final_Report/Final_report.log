@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.5.19)  13 JAN 2021 11:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019) (preloaded format=pdflatex 2019.5.19)  14 JAN 2021 13:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -242,16 +242,12 @@ LaTeX Info: Redefining \nameref on input line 8.
 File: image/rsi_bourse.png Graphic file (type png)
 <use image/rsi_bourse.png>
 Package pdftex.def Info: image/rsi_bourse.png  used on input line 21.
-(pdftex.def)             Requested size: 359.74939pt x 179.87468pt.
-
-Overfull \hbox (14.74939pt too wide) in paragraph at lines 21--23
- [][] 
- []
-
-[1
+(pdftex.def)             Requested size: 308.35437pt x 154.17719pt.
+ [1
 
 {/usr/local/texlive/2019/texmf-var/fonts/map/pdftex/updmap/pdftex.map} <./image
-/rsi_bourse.png>] (./Final_report.toc
+/rsi_bourse.png>]
+(./Final_report.toc
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 6.
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -278,22 +274,21 @@ Underfull \hbox (badness 10000) in paragraph at lines 111--114
 
  []
 
-[5]
-<image/results.png, id=102, 354.72525pt x 52.39575pt>
+<image/results.png, id=94, 354.72525pt x 52.39575pt>
 File: image/results.png Graphic file (type png)
 <use image/results.png>
 Package pdftex.def Info: image/results.png  used on input line 117.
-(pdftex.def)             Requested size: 283.78058pt x 41.91664pt.
+(pdftex.def)             Requested size: 212.83679pt x 31.43768pt.
+[5]
 <image/marketSituation.png, id=103, 445.665pt x 80.7015pt>
 File: image/marketSituation.png Graphic file (type png)
 <use image/marketSituation.png>
 Package pdftex.def Info: image/marketSituation.png  used on input line 142.
 (pdftex.def)             Requested size: 222.83195pt x 40.35065pt.
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 146.
- [6 <./image/results.png>] [7 <./image/marketSituation.png>]
+ [6 <./image/results.png> <./image/marketSituation.png>]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 146.
-
-(./Final_report.aux)
+ (./Final_report.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 146.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 146.
 Package rerunfilecheck Info: File `Final_report.out' has not changed.
@@ -301,9 +296,9 @@ Package rerunfilecheck Info: File `Final_report.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 146.
  ) 
 Here is how much of TeX's memory you used:
- 5125 strings out of 492616
- 76710 string characters out of 6129481
- 167777 words of memory out of 5000000
+ 5124 strings out of 492616
+ 76704 string characters out of 6129481
+ 168777 words of memory out of 5000000
  8999 multiletter control sequences out of 15000+600000
  5803 words of font info for 21 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -318,10 +313,10 @@ local/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/lo
 cal/texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local
 /texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/
 texlive/2019/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on Final_report.pdf (8 pages, 916007 bytes).
+Output written on Final_report.pdf (7 pages, 916405 bytes).
 PDF statistics:
- 158 PDF objects out of 1000 (max. 8388607)
- 128 compressed objects within 2 object streams
- 23 named destinations out of 1000 (max. 500000)
+ 154 PDF objects out of 1000 (max. 8388607)
+ 125 compressed objects within 2 object streams
+ 22 named destinations out of 1000 (max. 500000)
  109 words of extra memory for PDF output out of 10000 (max. 10000000)
 

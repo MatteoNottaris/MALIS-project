@@ -17,8 +17,8 @@ Tutor : Maria ZULUAGA
 
 \vspace*{\fill}  
 \begin{center}  
-     {\huge RSI indicator and Machine Learning}\\[30mm]
-     \includegraphics[scale=0.35]{image/rsi_bourse.png}
+     {\LARGE Machine Learning to optimize a Stock Market Indicator}\\[15mm]
+     \includegraphics[scale=0.30]{image/rsi_bourse.png}
 	 \centering
 \end{center}
 \vspace*{\fill} 
@@ -35,26 +35,26 @@ Tutor : Maria ZULUAGA
 
 \section{Project origin}
 
-\vskip 0.5cm
+\vskip 0.3cm
 We wanted to invest ourself in a project linked with finance because we both want to orient our professional careers in this domain.
 In order to do so we contacted a FOREX trader working for Crédit Agricole Indosuez Wealth Management, with whom one of us worked during an internship. Our main concern was to find a project's subject usable for traders once finished and with a real application in the trading rooms.
 
-\vskip 0.5cm
+\vskip 0.3cm
 We knew that there were already several projects on internet about trying to determine the future evolution of stocks using Machine Learning algorithms. Nevertheless, we wanted for our first ever project in the subject to try something new, ambitious and above all interesting for traders. Therefore, our contact told us to work on financial indicators which are helping traders to interpret trends on the market.
 
-\vskip 0.5cm 
+\vskip 0.3cm 
 At the beginning, the idea was to write algorithms capable of determining for a given representation of the market the most relevant indicator. Therefore, traders would just need to see which indicator is returned by algorithms and use it in order to interpret a situation. However, we soon understood that it was maybe a bit too complex for beginners especially with the time we had to develop our project.
 Therefore, we slightly changed the project to have it as it is today.
 
 \section{Project description}
 
-\vskip 0.5cm
+\vskip 0.3cm
 As explained above the project definition slightly changed from our original thoughts. We focus on one commonly used indicator for traders which is called RSI for Relative Strength Index. RSI is an indicator which gives an indication on the trend of an asset, using two different parameters, which we will call the upper and the lower one. If the RSI signal is over the upper parameter it means that the asset we are interested in (EURUSD in our case) is overbought and therefore there will probably have a reversal in the asset trend. Hence the RSI tells us to sell the asset if the price is high and rebuy it after the reversal, this would allow us to make a profit. The lower parameter is working exactly the same, because when the RSI signal is under it the asset is over sold and the asset trend might go up strongly. As a result the RSI tells us to buy while it is low and sold after the reversal.
 
-\vskip 0.5cm
+\vskip 0.3cm
 However, the main problem with this indicator is that it is always used with two parameters, RSI(80,20) or RSI(70,30) for instance. We thought that depending on the market situation those two parameters could be adapted  for the RSI to be even more precised. 
 
-\vskip 0.5cm
+\vskip 0.3cm
 There were three main steps in order to lead this project to its end.\\
 The first was to determine what could be a representative picture of a market and then extract all the data sets corresponding.\\
 The second one was to find which couple of parameters suits the best for a given situation.\\
@@ -62,25 +62,25 @@ With this second step we were able to develop a new data set used for the third 
 
 \section{Extraction of the data sets}
 
-\vskip 0.5cm
+\vskip 0.3cm
 For the sake of our project we needed to extract a lot of different data sets (Annexe 1) in order to perfectly determine what represents a market situation. To do so we contacted our trader colleague who was far more capable than us to do this list of important representant of the market.\\
 We used two different websites to extract the data sets.\\
 The first one was \href{https://www.alphavantage.co/}{AlphaVantage} in order to extract the RSI signal for our asset : the dual currency EUR/USD.
 The second website we used, in order to download the data from all the other stocks, was \href{https://fr.finance.yahoo.com/}{Yahoo Finances}. 
 
-\vskip 0.5cm
+\vskip 0.3cm
 The hard part in it wasn't downloading the data sets from the websites and loading them in excel files, but it was succeeding on making sure that all of them were over the same dates set. Indeed, we needed to be sure that we had the value of each indicators for a given date. We succeeded in doing so, using the manipulation of Python's dictionnaries and arrays.At the end of this step we had more than 2900 common and different dates for all the data set. We could now use this data set as we wanted.
 
 \section{Creation of a new data set}
 
-\vskip 0.5cm
+\vskip 0.3cm
 The second step of the project was to generate, using the data sets downloaded and shaped in the first step, a new data set which would contain, for different couple of parameters, the most relevant market situation.
 
-\vskip 0.5cm
+\vskip 0.3cm
 In order to do so we had to determine how to estimate the best situation according to a couple of parameters. We decided, with the trader, that the best way was to calculate a performance using the RSI signal and the two chosen parameters. Concretely, we put ourselves in a situation of having a certain amount of money on day 0 and then we follow exactly the instructions of the \(RSI(p_1,p_2)\) which means that if it tells us to sell we do so and same if it tells us to buy. Then we calculate a performance, in other words we calculate our benefits in percentage, compared to the situation where we would have not listened to it.\\
 At the end we look for this given couple of parameters which of the 2900 dates has the highest performance. We did that for every parameter from RSI(90,10) to RSI(51,49) incremented by 0.5 each time. For these 80 different couples we attribute 10 different dates which correspond to the 10 best performances. 
 
-\vskip 0.5cm
+\vskip 0.3cm
 This new data set will be used in order to train our Neural Network in the next step of the project. 
 
 \begin{figure}[hbt!]
@@ -92,17 +92,17 @@ This new data set will be used in order to train our Neural Network in the next 
 
 \section{Use of a Neural Network}
 \subsection{Initial thoughts}
-\vskip 0.5cm
+\vskip 0.3cm
 In this last step of the project we are trying to train a neural network. This neural network takes as inputs a vector of shape (19,1), corresponding to all the market indicators used to define a market situation (see Annexe 1). As output the neural network sends back a vector of shape (1,1) corresponding to the first optimal parameter which should be used considering the situation in input. The second parameter can be easily determined : \[par_{1} + par_{2} = 100\].
-\vskip 0.5cm
+\vskip 0.3cm
 In order to do so, we took an already implemented neural network that we used during one of our previous labs in class, and tried to adapt it to our situation. \\
 The first main difference between the neural network problem in the lab session and our project is that the problem we are tackeling is a regression problem while the other one was a classification exercise. We understood that when we found odd results especially between 0 and 1 due to the sigmoid activation function used.
 
-\vskip 0.5cm
+\vskip 0.3cm
 As we understood that our problem is a regression one, we changed the activation function on the last layer of our network by a regression function. However, we kept struggling  with this neural network, and our tutor wisely advised us to use a python library like scikit-learn to implement it, because this new network might be more robust.
 
 \subsection{Scikit-Learn}
-\vskip 0.5cm
+\vskip 0.3cm
 The use of scikit-learn was very helpful because we just had to focus on the choice of parameters and not anymore on the concrete development of the neural network.\\
 Our subject was a regression problem, therefore we compared four different linear functions : \textit{tanh}, \textit{identity}, \textit{logistic} and \textit{relu}.
 For each of those ones we used a function of scikit-learn called \textit{GridSearchCV}, in order to find the optimal parameters. \\
@@ -114,13 +114,13 @@ Overall, we can see in the following table that the results are far better when 
 
 \begin{figure}[hbt!]
 	\center{}
-	\includegraphics[scale=0.8]{image/results.png}
+	\includegraphics[scale=0.6]{image/results.png}
 	\caption{MSE for different functions and datasets}
 \end{figure}
 
 
 \section{What should be improved}
-\vskip 0.5cm
+\vskip 0.3cm
 This project was very interesting, especially for beginners  in machine learning like us. Obviously, the results we got could be much better and there are two main reasons for it. \\
 The first one is that the data we are looking at could be wider.Indeed, we could try to find better situations for the different couples of parameters. For example looking for datas from previous years. We could even look for the market situation every hours, instead of everyday, to increase the number of potential situation to optimally fit the given parameters. \\
 The second reason is that maybe neural networks from scikit-learn are not powerful or robust enough. As a result by using stronger neural networks we could obtain far better results for some of the functions like \textit{tanh} or \textit{relu}. \\
@@ -129,7 +129,7 @@ Overall, this study is primary and there is still a lot of work to improve it.
 
 \section{Sharing of the work}
 
-\vskip 0.5cm
+\vskip 0.3cm
 For the beginning of the project we spread the work pretty evenly.
 Nicolas did most of the extraction of data from the two websites (AlphaVantage and Yahoo Finance). 
 Then Matteo did the shaping of the data and the creation of the new data set.\\
